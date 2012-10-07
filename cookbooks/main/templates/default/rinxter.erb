@@ -1,0 +1,46 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          rinxter
+# Required-Start:    $network $syslog mysql tomcat
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start daemon at boot time
+# Description:       Enable service provided by daemon.
+### END INIT INFO
+RETVAL=0;
+
+RINXTER_BASE="/home/vagrant/rinxter/base"
+
+start() {
+echo "Starting Rinxter"
+$RINXTER_BASE/bin/tstart.sh &2>&1 > $RINXTER_BASE/logs/service.log
+}
+
+stop() {
+echo "Stopping Rinxter"
+$RINXTER_BASE/bin/tstop.sh
+}
+
+restart() {
+stop
+start
+}
+
+case "$1" in
+start)
+  start
+;;
+stop)
+  stop
+;;
+restart)
+  restart
+;;
+*)
+
+echo $"Usage: $0 {start|stop|restart}"
+exit 1
+esac
+
+exit $RETVAL  
